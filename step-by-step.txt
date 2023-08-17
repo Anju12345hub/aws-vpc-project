@@ -1,27 +1,43 @@
-1)create a vpc
-  - select vpc and more option
-2)create launch template
-  - can use this template across multple autoscaling group
-  - add rule to your SG.Add port number 8000(tcp)for your application and protocol ssh
-3)create autoscaling group
-  - using the same launch template 
-  - select private subnets,for additinal security our server is running on private subnets
-  - set up value for desired capacity(2),minimum capacity(1),max capacity(4).
-4)now we can see the ec2 instances are created
-5)Instances are created in private subnets,so there is no public ip.The servers are accessing through the public ip of bastion host
-6)create Bastion-host in public subnet
-  - using Scp, copy the privatekey from your local machine to bastion-host.then ssh into the bastion-host.
-  - from bastion-host ssh into your servers in private subnets.
-  - create your web application inside the servers
-  - here iam creating an html file
-  - and run
-       $python3 -m http.server 8000
-7)create a targetgroup
-  - select the two ec2 instances
-8)create Load balancer for distributing the traffic
-  - select ALB
-  - select the 2AZs in public subnets
-  - add the targetgroup that we created
-  - add inbound rule http 80 in SG
-The Loadbalancer is active now,copy the DNS name on your browser
-your application is running!  
+This project involves setting up a secure and scalable infrastructure for deploying a web application. The steps are outlined below:
+
+1)Creating a Virtual Private Cloud (VPC): 
+  Start by creating a private network environment using Amazon Virtual Private Cloud (VPC).
+
+2)Setting Up Launch Template: 
+  Develop a launch template that defines the configuration of instances in your infrastructure. 
+  This template can be used for multiple Auto Scaling Groups, ensuring consistency.
+
+3)Configuring Auto Scaling Group: 
+  Create an Auto Scaling Group using the launch template. 
+  This group will manage the number of instances running your application based on traffic. 
+  For additional security, these instances will reside in private subnets.
+
+4)Creating Instances: 
+  The instances are automatically created within the private subnets of the VPC, without public IP addresses. 
+  They can only be accessed through a Bastion Host.
+
+5)Implementing Bastion Host: 
+  Establish a Bastion Host in a public subnet. 
+  This host acts as a secure gateway for accessing instances in private subnets. 
+  Transfer your private key to the Bastion Host using Secure Copy (SCP) and use it to SSH into the Bastion Host.
+
+6)Accessing Instances via Bastion Host: 
+  From the Bastion Host, SSH into the private instances. 
+  Within these instances, you can deploy your web application. 
+  For instance, create a simple HTML file and run a Python HTTP server on port 8000.
+  $python3 -m http.server 8000
+
+7)Creating a Target Group: 
+  Set up a target group to manage the routing of incoming traffic to your instances.
+
+8)Load Balancer Configuration: 
+  Configure an Application Load Balancer (ALB) across two Availability Zones in public subnets.
+  Attach the target group to the ALB for distributing traffic.
+  Add an inbound rule in the Security Group to allow HTTP traffic on port 80.
+
+9)Accessing the Application: 
+  With the Load Balancer active, copy the provided DNS name into your web browser. 
+  This DNS name directs you to the running web application.
+
+In summary, this project employs Amazon Web Services (AWS) to create a VPC, launch template, and Auto Scaling Group for deploying a web application. 
+Instances are kept secure in private subnets, accessed through a Bastion Host, and managed using a Load Balancer for efficient traffic distribution.
